@@ -75,23 +75,23 @@ function Body({ classes }) {
             <RadioGroup name="priority" defaultValue="">
               <FormControlLabel
                 className={classes.radioGroup}
-                value="3"
+                value="4"
                 control={<Radio />}
                 label="Срочная важная задача"
               />
               <FormControlLabel
                 className={classes.radioGroup}
-                value="2"
+                value="3"
                 control={<Radio />}
                 label="Срочная неважная задача"
               />
               <FormControlLabel
-                value="1"
+                value="2"
                 control={<Radio />}
                 label="Не срочная важная задача"
               />
               <FormControlLabel
-                value="0"
+                value="1"
                 control={<Radio />}
                 label="Не срочная неважная задача"
               />

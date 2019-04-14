@@ -26,7 +26,7 @@ const handleSubmit = (add, handleClose) => e => {
   const name = form.name.value;
   const desc = form.desc.value;
   const date = form.date.value;
-  const priority = form.priority.value;
+  const priority = form.priority ? form.priority.value : '';
   const tag = form.tag.value;
   add({ id, status, name, desc, date, priority, tag });
   handleClose();
