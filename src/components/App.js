@@ -1,5 +1,4 @@
-import React, { Fragment } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React, { Fragment, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -8,7 +7,12 @@ import PropTypes from 'prop-types';
 import withRoot from '../withRoot';
 import Table from './Table';
 import Drawer from './Drawer';
-
+import {
+  TodosContext,
+  DrawerContext,
+  todoList,
+  drawer as drawerState,
+} from '../context';
 // eslint-disable-next-line no-unused-vars
 const styles = theme => ({
   createButton: {
@@ -23,9 +27,20 @@ const styles = theme => ({
 
 // eslint-disable-next-line arrow-body-style
 const App = ({ classes }) => {
+  const [draw, setToggle] = useState(drawerState);
+  const handleDrawer = () => {
+    setToggle({ open: !draw.open });
+  };
+  const [items, setList] = useState(todoList.list);
+  const add = ({ name, id, desc, tag, date, priority, status }) => {
+    setList([...items, { name, id, desc, tag, date, priority, status }]);
+  };
+  const todoValue = {
+    list: items,
+    add,
+  };
   return (
     <Fragment>
-      <CssBaseline />
       <section className="title">
         <Typography
           className={classes.mainTitle}
@@ -39,18 +54,22 @@ const App = ({ classes }) => {
           <Button
             className={classes.createButton}
             variant="contained"
-            color="primary"
+            onClick={handleDrawer}
           >
             Добавить задачу
           </Button>
         </Typography>
       </section>
-      <section className="table">
-        <Table />
-      </section>
-      <section>
-        <Drawer />
-      </section>
+      <DrawerContext.Provider value={draw}>
+        <TodosContext.Provider value={todoValue}>
+          <section className="table">
+            <Table />
+          </section>
+          <section className="drawer">
+            <Drawer handleClose={handleDrawer} />
+          </section>
+        </TodosContext.Provider>
+      </DrawerContext.Provider>
     </Fragment>
   );
 };
