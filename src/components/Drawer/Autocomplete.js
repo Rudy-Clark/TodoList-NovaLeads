@@ -82,7 +82,6 @@ function getSuggestions(value) {
 const styles = theme => ({
   root: {
     height: 0,
-    marginTop: theme.spacing.unit,
     width: '122px',
   },
   container: {

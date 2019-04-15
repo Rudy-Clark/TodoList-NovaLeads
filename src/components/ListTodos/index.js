@@ -12,7 +12,7 @@ function ListTodos() {
   return (
     <Fragment>
       <TodosContext.Consumer>
-        {({ list }) => {
+        {({ list, setStatus }) => {
           console.log(list);
           return list.map(item => (
             <TableRow key={item.id}>
@@ -20,7 +20,11 @@ function ListTodos() {
                 {item.id}
               </TableCell>
               <TableCell>
-                <StatusMenu status={item.status} />
+                <StatusMenu
+                  status={item.status}
+                  id={item.id}
+                  setStatus={setStatus}
+                />
               </TableCell>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.desc}</TableCell>

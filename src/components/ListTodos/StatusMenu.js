@@ -14,22 +14,9 @@ const styles = () => ({
 
 const options = ['На Потом', 'Выполняется', 'Выполнено'];
 
-const getStatus = status => {
-  switch (+status) {
-    case 1:
-      return 'На Потом';
-    case 2:
-      return 'Выполняется';
-    case 3:
-      return 'Выполнено';
-    default:
-      return '';
-  }
-};
-
 const ITEM_HEIGHT = 32;
 
-function StatusMenu({ status, classes }) {
+function StatusMenu({ status, classes, id, setStatus }) {
   const [ref, setRefEl] = useState(null);
   const open = Boolean(ref);
 
@@ -64,18 +51,23 @@ function StatusMenu({ status, classes }) {
           },
         }}
       >
-        {options.map((option, idx) => (
+        {options.map((option, index) => (
           <MenuItem
             key={option}
-            selected={idx + 1 === +status}
-            onClick={handleClose}
+            selected={index + 1 === +status}
+            onClick={setStatus(id, String(index + 1), handleClose)}
           >
             {option}
           </MenuItem>
         ))}
       </Menu>
     </Fragment>
-  )
+  );
+}
+StatusMenu.propTypes = {
+  id: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
+  status: PropTypes.string.isRequired,
+  setStatus: PropTypes.func.isRequired,
 };
-
 export default withStyles(styles)(StatusMenu);

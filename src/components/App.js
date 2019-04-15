@@ -31,13 +31,26 @@ const App = ({ classes }) => {
   const handleDrawer = () => {
     setToggle({ open: !draw.open });
   };
+
   const [items, setList] = useState(todoList.list);
   const add = ({ name, id, desc, tag, date, priority, status }) => {
     setList([...items, { name, id, desc, tag, date, priority, status }]);
   };
+
+  const setStatus = (id, value, closeFunc) => () => {
+    const newItems = items.map(item => {
+      // eslint-disable-next-line no-param-reassign
+      if (item.id === id) item.status = value;
+      return item;
+    });
+    setList(newItems);
+    closeFunc();
+  };
+
   const todoValue = {
     list: items,
     add,
+    setStatus,
   };
   return (
     <Fragment>
