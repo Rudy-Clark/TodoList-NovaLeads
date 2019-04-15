@@ -2,6 +2,7 @@ import { createContext } from 'react';
 
 export const drawer = {
   open: false,
+  id: null,
 };
 
 export const todoList = {

@@ -21,15 +21,15 @@ const styles = theme => ({
     left: '12px',
   },
   mainTitle: {
-    padding: '12px 0 12px',
+    padding: '12px 0',
   },
 });
 
 // eslint-disable-next-line arrow-body-style
 const App = ({ classes }) => {
-  const [draw, setToggle] = useState(drawerState);
-  const handleDrawer = () => {
-    setToggle({ open: !draw.open });
+  const [form, setToggle] = useState(drawerState);
+  const handleDrawer = (id = null) => {
+    setToggle({ open: !form.open, id });
   };
 
   const [items, setList] = useState(todoList.list);
@@ -47,10 +47,22 @@ const App = ({ classes }) => {
     closeFunc();
   };
 
+  const del = id => setList(items.filter(item => item.id !== id));
+  const edit = id => {
+    console.log(id);
+    handleDrawer(id);
+  };
+
+  const drawerValue = {
+    open: form.open,
+    id: form.id,
+  };
   const todoValue = {
     list: items,
     add,
     setStatus,
+    del,
+    edit,
   };
   return (
     <Fragment>
@@ -71,7 +83,7 @@ const App = ({ classes }) => {
           Добавить задачу
         </Button>
       </Typography>
-      <DrawerContext.Provider value={draw}>
+      <DrawerContext.Provider value={drawerValue}>
         <TodosContext.Provider value={todoValue}>
           <Table />
           <Drawer handleClose={handleDrawer} />

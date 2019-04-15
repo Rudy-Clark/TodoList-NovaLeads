@@ -37,14 +37,23 @@ const styles = theme => ({
   },
 });
 
-function Body({ classes }) {
+function Body({ classes, updateItem }) {
   const [active, setActive] = useState(false);
   const [value, setValue] = useState('');
+  let defaultValues;
+  if (updateItem) {
+    defaultValues = { ...updateItem };
+  }
   return (
     <main className={classes.main}>
       <FormControl margin="normal" required>
         <InputLabel htmlFor="name">Название задачи</InputLabel>
-        <Input id="name" name="name" type="text" />
+        <Input
+          id="name"
+          name="name"
+          type="text"
+          defaultValue={defaultValues ? defaultValues.name : ''}
+        />
       </FormControl>
       <TextField
         name="desc"
@@ -99,7 +108,7 @@ function Body({ classes }) {
           )}
         </Grid>
       </Grid>
-      <Grid container spacing={0} justify="center" alignItems="center">
+      <Grid container justify="center" alignItems="center">
         <Grid item xs={6}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="status">Статус</InputLabel>
@@ -126,6 +135,7 @@ function Body({ classes }) {
 
 Body.propTypes = {
   classes: PropTypes.object.isRequired,
+  updateItem: PropTypes.object || '',
 };
 
 export default withStyles(styles)(Body);
