@@ -75,23 +75,23 @@ function Body({ classes }) {
             <RadioGroup name="priority" defaultValue="">
               <FormControlLabel
                 className={classes.radioGroup}
-                value="4"
+                value="Срочная важная задача"
                 control={<Radio />}
                 label="Срочная важная задача"
               />
               <FormControlLabel
                 className={classes.radioGroup}
-                value="3"
+                value="Срочная неважная задача"
                 control={<Radio />}
                 label="Срочная неважная задача"
               />
               <FormControlLabel
-                value="2"
+                value="Не срочная важная задача"
                 control={<Radio />}
                 label="Не срочная важная задача"
               />
               <FormControlLabel
-                value="1"
+                value="Не срочная неважная задача"
                 control={<Radio />}
                 label="Не срочная неважная задача"
               />
@@ -108,9 +108,9 @@ function Body({ classes }) {
           value={value}
           inputProps={{ id: 'status', name: 'status' }}
         >
-          <MenuItem value="Выполняется">Выполняется</MenuItem>
-          <MenuItem value="На потом">На потом</MenuItem>
-          <MenuItem value="Выполнена">Выполнена</MenuItem>
+          <MenuItem value="3">Выполнена</MenuItem>
+          <MenuItem value="2">Выполняется</MenuItem>
+          <MenuItem value="1">На потом</MenuItem>
         </Select>
       </FormControl>
       <Autocomplete />

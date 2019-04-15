@@ -3,22 +3,10 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import { TodosContext } from '../../context';
 
-const getPriority = status => {
-  switch (+status) {
-    case 1:
-      return 'Не срочная неважная задача';
-    case 2:
-      return 'Не срочная важная задача';
-    case 3:
-      return 'Срочная неважная задача';
-    case 4:
-      return 'Срочная важная задача';
-    default:
-      return '';
-  }
-};
+import { TodosContext } from '../../context';
+import StatusMenu from './StatusMenu';
+
 
 function ListTodos() {
   return (
@@ -31,11 +19,13 @@ function ListTodos() {
               <TableCell component="td" scope="row">
                 {item.id}
               </TableCell>
-              <TableCell>{item.status}</TableCell>
+              <TableCell>
+                <StatusMenu status={item.status} />
+              </TableCell>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.desc}</TableCell>
               <TableCell>{item.date}</TableCell>
-              <TableCell>{getPriority(item.priority)}</TableCell>
+              <TableCell>{item.priority}</TableCell>
               <TableCell>{item.tag}</TableCell>
             </TableRow>
           ));
