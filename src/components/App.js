@@ -41,33 +41,27 @@ const App = ({ classes }) => {
   };
   return (
     <Fragment>
-      <section className="title">
-        <Typography
-          className={classes.mainTitle}
-          component="h3"
-          variant="h2"
-          align="center"
-          color="textPrimary"
-          gutterBottom
+      <Typography
+        className={classes.mainTitle}
+        component="h3"
+        variant="h2"
+        align="center"
+        color="textPrimary"
+        gutterBottom
+      >
+        Список Задач
+        <Button
+          className={classes.createButton}
+          variant="contained"
+          onClick={handleDrawer}
         >
-          Список Задач
-          <Button
-            className={classes.createButton}
-            variant="contained"
-            onClick={handleDrawer}
-          >
-            Добавить задачу
-          </Button>
-        </Typography>
-      </section>
+          Добавить задачу
+        </Button>
+      </Typography>
       <DrawerContext.Provider value={draw}>
         <TodosContext.Provider value={todoValue}>
-          <section className="table">
-            <Table />
-          </section>
-          <section className="drawer">
-            <Drawer handleClose={handleDrawer} />
-          </section>
+          <Table />
+          <Drawer handleClose={handleDrawer} />
         </TodosContext.Provider>
       </DrawerContext.Provider>
     </Fragment>

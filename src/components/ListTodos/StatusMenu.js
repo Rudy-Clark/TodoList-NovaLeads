@@ -50,7 +50,6 @@ function StatusMenu({ status, classes }) {
         onClick={handleClick}
         className={classes.iconButton}
       >
-        {getStatus(status)}
         <MoreVertIcon />
       </IconButton>
       <Menu

@@ -70,18 +70,18 @@ function getSuggestions(value) {
   return inputLength === 0
     ? []
     : suggestions.filter(suggestion => {
-        const keep =
+      const keep =
           count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
-        if (keep) {
-          count += 1;
-        }
-        return keep;
-      });
+      if (keep) {
+        count += 1;
+      }
+      return keep;
+    });
 }
 
 const styles = theme => ({
   root: {
-    height: 250,
+    height: 0,
     marginTop: theme.spacing.unit,
     width: '122px',
   },

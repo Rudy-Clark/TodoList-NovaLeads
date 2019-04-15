@@ -55,7 +55,7 @@ function Body({ classes }) {
         rowsMax="3"
         className={classes.textField}
       />
-      <Grid container spacing={8}>
+      <Grid container spacing={8} alignItems="center">
         <Grid item xs={6}>
           <TextField
             label="Дата выполнения"
@@ -99,21 +99,27 @@ function Body({ classes }) {
           )}
         </Grid>
       </Grid>
-      <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="status">Статус</InputLabel>
-        <Select
-          onChange={e => {
-            setValue(e.target.value);
-          }}
-          value={value}
-          inputProps={{ id: 'status', name: 'status' }}
-        >
-          <MenuItem value="3">Выполнена</MenuItem>
-          <MenuItem value="2">Выполняется</MenuItem>
-          <MenuItem value="1">На потом</MenuItem>
-        </Select>
-      </FormControl>
-      <Autocomplete />
+      <Grid container spacing={0} justify="center" alignItems="center">
+        <Grid item xs={6}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="status">Статус</InputLabel>
+            <Select
+              onChange={e => {
+                setValue(e.target.value);
+              }}
+              value={value}
+              inputProps={{ id: 'status', name: 'status' }}
+            >
+              <MenuItem value="3">Выполнена</MenuItem>
+              <MenuItem value="2">Выполняется</MenuItem>
+              <MenuItem value="1">На потом</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <Autocomplete />
+        </Grid>
+      </Grid>
     </main>
   );
 }
