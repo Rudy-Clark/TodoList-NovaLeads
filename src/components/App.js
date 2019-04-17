@@ -52,6 +52,9 @@ const App = ({ classes }) => {
     console.log(id);
     handleDrawer(id);
   };
+  const update = editedItem => {
+    setList(items.map(item => (item.id === editedItem.id ? editedItem : item)));
+  };
 
   const drawerValue = {
     open: form.open,
@@ -59,7 +62,6 @@ const App = ({ classes }) => {
   };
   const todoValue = {
     list: items,
-    add,
     setStatus,
     del,
     edit,
@@ -86,7 +88,7 @@ const App = ({ classes }) => {
       <DrawerContext.Provider value={drawerValue}>
         <TodosContext.Provider value={todoValue}>
           <Table />
-          <Drawer handleClose={handleDrawer} />
+          <Drawer add={add} update={update} handleClose={handleDrawer} />
         </TodosContext.Provider>
       </DrawerContext.Provider>
     </Fragment>
