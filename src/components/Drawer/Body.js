@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-return-assign */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -37,13 +39,23 @@ const styles = theme => ({
   },
 });
 
+const priorityOptions = [
+  { label: 'Не срочная неважная задача', id: 'a' },
+  { label: 'Не срочная важная задача', id: 'b' },
+  { label: 'Срочная неважная задача', id: 'c' },
+  { label: 'Срочная важная задача', id: 'd' },
+];
+
+const propsForm = ['name', 'tag', 'status', 'priority', 'date', 'desc'];
+
 function Body({ classes, updateItem }) {
-  const [active, setActive] = useState(false);
-  const [value, setValue] = useState('');
-  let defaultValues;
-  if (updateItem) {
-    defaultValues = { ...updateItem };
-  }
+  const defaultValues = propsForm.reduce((object, key) => {
+    if (!updateItem) object[key] = '';
+    else object[key] = updateItem[key];
+    return object;
+  }, {});
+  const [active, setActive] = useState(defaultValues.priority ? true : false);
+  const [value, setValue] = useState(defaultValues.status);
   return (
     <main className={classes.main}>
       <FormControl margin="normal" required>
@@ -52,7 +64,7 @@ function Body({ classes, updateItem }) {
           id="name"
           name="name"
           type="text"
-          defaultValue={defaultValues ? defaultValues.name : ''}
+          defaultValue={defaultValues.name}
         />
       </FormControl>
       <TextField
@@ -63,6 +75,7 @@ function Body({ classes, updateItem }) {
         fullWidth
         rowsMax="3"
         className={classes.textField}
+        defaultValue={defaultValues.desc}
       />
       <Grid container spacing={8} alignItems="center">
         <Grid item xs={6}>
@@ -72,7 +85,7 @@ function Body({ classes, updateItem }) {
             name="date"
             margin="normal"
             onChange={e => setActive(true)}
-            defaultValue=""
+            defaultValue={defaultValues.date}
             className={classes.textField}
             InputLabelProps={{
               shrink: true,
@@ -81,29 +94,16 @@ function Body({ classes, updateItem }) {
         </Grid>
         <Grid item xs={6}>
           {active && (
-            <RadioGroup name="priority" defaultValue="">
-              <FormControlLabel
-                className={classes.radioGroup}
-                value="Срочная важная задача"
-                control={<Radio />}
-                label="Срочная важная задача"
-              />
-              <FormControlLabel
-                className={classes.radioGroup}
-                value="Срочная неважная задача"
-                control={<Radio />}
-                label="Срочная неважная задача"
-              />
-              <FormControlLabel
-                value="Не срочная важная задача"
-                control={<Radio />}
-                label="Не срочная важная задача"
-              />
-              <FormControlLabel
-                value="Не срочная неважная задача"
-                control={<Radio />}
-                label="Не срочная неважная задача"
-              />
+            <RadioGroup name="priority" defaultValue={defaultValues.priority}>
+              {priorityOptions.map(item => (
+                <FormControlLabel
+                  key={item.id}
+                  className={classes.radioGroup}
+                  value={item.label}
+                  control={<Radio />}
+                  label={item.label}
+                />
+              ))}
             </RadioGroup>
           )}
         </Grid>
@@ -126,7 +126,7 @@ function Body({ classes, updateItem }) {
           </FormControl>
         </Grid>
         <Grid item xs={6}>
-          <Autocomplete />
+          <Autocomplete defaultValue={defaultValues.tag} />
         </Grid>
       </Grid>
     </main>

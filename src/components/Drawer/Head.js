@@ -9,7 +9,7 @@ const styles = () => ({
   },
 });
 
-function Head({ classes }) {
+function Head({ classes, item }) {
   return (
     <Typography
       component="h4"
@@ -18,12 +18,13 @@ function Head({ classes }) {
       noWrap
       className={classes.title}
     >
-    Создать Задачу
+      {item ? item.name : 'Создать Задачу'}
     </Typography>
   );
 }
 Head.propTypes = {
   classes: PropTypes.object.isRequired,
+  item: PropTypes.object || '',
 };
 
 export default withStyles(styles)(Head);

@@ -39,19 +39,25 @@ function FormDrawer({ handleClose, classes }) {
     <DrawerContext.Consumer>
       {({ open, id }) => (
         <TodosContext.Consumer>
-          {({ add, list }) => (
-            <Drawer anchor="right" open={open} onClose={handleClose}>
-              <div className={classes.drawer}>
-                <Head />
-                <form onSubmit={handleSubmit(add, id)} className={classes.form}>
-                  <Divider />
-                  <Body updateItem={list.filter(item => item.id === id)[0]} />
-                  <Divider />
-                  <Footer handleClose={handleClose} />
-                </form>
-              </div>
-            </Drawer>
-          )}
+          {({ add, list }) => {
+            const updateItem = list.filter(item => item.id === id)[0]
+            return (
+              <Drawer anchor="right" open={open} onClose={handleClose}>
+                <div className={classes.drawer}>
+                  <Head item={updateItem} />
+                  <form
+                    onSubmit={handleSubmit(add, id)}
+                    className={classes.form}
+                  >
+                    <Divider />
+                    <Body updateItem={updateItem} />
+                    <Divider />
+                    <Footer handleClose={handleClose} />
+                  </form>
+                </div>
+              </Drawer>
+            );
+          }}
         </TodosContext.Consumer>
       )}
     </DrawerContext.Consumer>
