@@ -54,7 +54,7 @@ function Body({ classes, updateItem }) {
     else object[key] = updateItem[key];
     return object;
   }, {});
-  const [active, setActive] = useState(defaultValues.priority ? true : false);
+  const [active, setActive] = useState(!!defaultValues.priority);
   const [value, setValue] = useState(defaultValues.status);
   return (
     <main className={classes.main}>

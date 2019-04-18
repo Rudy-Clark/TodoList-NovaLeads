@@ -24,7 +24,7 @@ function StatusMenu({ status, classes, id, setStatus }) {
     setRefEl(event.currentTarget);
   }
 
-  function handleClose() {
+  function close() {
     setRefEl(null);
   }
 
@@ -43,7 +43,7 @@ function StatusMenu({ status, classes, id, setStatus }) {
         id="long-menu"
         anchorEl={ref}
         open={open}
-        onClose={handleClose}
+        onClose={close}
         PaperProps={{
           style: {
             maxHeight: ITEM_HEIGHT * 4.5,
@@ -55,7 +55,10 @@ function StatusMenu({ status, classes, id, setStatus }) {
           <MenuItem
             key={option}
             selected={index + 1 === +status}
-            onClick={setStatus(id, String(index + 1), handleClose)}
+            onClick={() => {
+              setStatus(id, String(index + 1));
+              close();
+            }}
           >
             {option}
           </MenuItem>

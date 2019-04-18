@@ -10,15 +10,16 @@ import Paper from '@material-ui/core/Paper';
 
 import ListTodos from './ListTodos';
 
-const styles = {
+const styles = theme => ({
   root: {
     width: '100%',
     overflowX: 'auto',
+    marginTop: theme.spacing.unit,
   },
   table: {
     minWidth: 700,
   },
-};
+});
 
 function SimpleTable(props) {
   const { classes } = props;

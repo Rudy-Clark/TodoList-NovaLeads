@@ -26,7 +26,9 @@ function ListTodos() {
                 />
               </TableCell>
               <TableCell>{item.name}</TableCell>
-              <TableCell>{item.desc}</TableCell>
+              <TableCell style={{ wordBreak: 'break-all' }}>
+                {item.desc}
+              </TableCell>
               <TableCell>{item.date}</TableCell>
               <TableCell>{item.priority}</TableCell>
               <TableCell>{item.tag}</TableCell>

@@ -18,19 +18,19 @@ const styles = () => ({
 });
 
 function Actions({ del, edit, classes }) {
-  const [hide, toggle] = useState(false);
-  const openActions = () => toggle(true);
-  const closeActions = () => toggle(false);
+  const [hide, toggle] = useState(true);
+  const openActions = () => toggle(false);
+  const closeActions = () => toggle(true);
   return (
     <div className={classes.root}>
       <SettingsIcon
         onMouseEnter={openActions}
-        className={classnames({ [classes.hide]: hide })}
+        className={classnames({ [classes.hide]: !hide })}
       />
       <Grid
         container
         onMouseLeave={closeActions}
-        className={classnames({ [classes.hide]: !hide })}
+        className={classnames({ [classes.hide]: hide })}
         justify="space-between"
       >
         <Grid item xs={6}>
