@@ -5,9 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
-  container: {
-    padding: '8px 0',
-  },
   button: {
     margin: theme.spacing.unit,
   },

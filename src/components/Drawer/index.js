@@ -18,13 +18,15 @@ const styles = theme => ({
   },
 });
 
-function FormDrawer({ handleClose, classes, add, update }) {
+function FormDrawer({ handleClose, classes, add, update, closeDrawer }) {
   const handleSubmit = updateItemId => e => {
     e.preventDefault();
     console.log(updateItemId);
     const form = e.target;
     const id =
-      typeof updateItemId === 'string' ? updateItemId : Date.now().toString(32);
+      typeof updateItemId === 'string' && updateItemId
+        ? updateItemId
+        : Date.now().toString(32);
     const status = form.status.value;
     const name = form.name.value;
     const desc = form.desc.value;
@@ -43,15 +45,16 @@ function FormDrawer({ handleClose, classes, add, update }) {
         <TodosContext.Consumer>
           {({ list }) => {
             const updateItem = list.filter(item => item.id === id)[0];
+            console.log(id);
             return (
-              <Drawer anchor="right" open={open} onClose={handleClose}>
+              <Drawer anchor="right" open={open} onClose={closeDrawer}>
                 <div className={classes.drawer}>
                   <Head item={updateItem} />
                   <form onSubmit={handleSubmit(id)} className={classes.form}>
                     <Divider />
                     <Body updateItem={updateItem} />
                     <Divider />
-                    <Footer handleClose={handleClose} />
+                    <Footer handleClose={closeDrawer} />
                   </form>
                 </div>
               </Drawer>
@@ -68,6 +71,7 @@ FormDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   add: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired,
+  closeDrawer: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(FormDrawer);

@@ -3,6 +3,7 @@ import { createContext } from 'react';
 export const drawer = {
   open: false,
   id: null,
+  changed: false,
 };
 
 export const todoList = {

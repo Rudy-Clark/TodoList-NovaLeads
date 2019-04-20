@@ -108,7 +108,12 @@ function Body({ classes, updateItem }) {
           )}
         </Grid>
       </Grid>
-      <Grid container justify="center" alignItems="center">
+      <Grid
+        container
+        justify="center"
+        alignContent="center"
+        alignItems="center"
+      >
         <Grid item xs={6}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="status">Статус</InputLabel>
