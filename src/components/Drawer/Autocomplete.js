@@ -170,7 +170,7 @@ const components = {
   ValueContainer,
 };
 
-function IntegrationReactSelect({ classes, defaultValue }) {
+function IntegrationReactSelect({ classes, defaultValue, handleChange }) {
   const [single, setSingle] = React.useState(null);
   function handleChangeSingle(value) {
     setSingle(value);
@@ -186,7 +186,10 @@ function IntegrationReactSelect({ classes, defaultValue }) {
           components={components}
           defaultInputValue={defaultValue}
           value={single}
-          onChange={handleChangeSingle}
+          onChange={e => {
+            handleChangeSingle(e);
+            handleChange(e);
+          }}
           placeholder="Тег"
         />
       </NoSsr>

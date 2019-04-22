@@ -10,7 +10,7 @@ const styles = theme => ({
   },
 });
 
-function Footer({ classes, handleClose }) {
+function Footer({ classes, closeDrawer }) {
   return (
     <Grid container style={{ width: '100%' }} spacing={24}>
       <Grid item xs={6}>
@@ -28,7 +28,7 @@ function Footer({ classes, handleClose }) {
           variant="contained"
           color="secondary"
           className={classes.button}
-          onClick={handleClose}
+          onClick={closeDrawer('check')}
         >
           Отмена
         </Button>
@@ -38,7 +38,7 @@ function Footer({ classes, handleClose }) {
 }
 Footer.propTypes = {
   classes: PropTypes.object.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  closeDrawer: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Footer);

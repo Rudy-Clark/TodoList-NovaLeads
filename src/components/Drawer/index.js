@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+
 import { DrawerContext, TodosContext } from '../../context';
 import Head from './Head';
 import Body from './Body';
 import Footer from './Footer';
+
+export const formRows = ['name', 'tag', 'status', 'priority', 'date', 'desc'];
 
 const styles = theme => ({
   drawer: {
@@ -18,10 +21,10 @@ const styles = theme => ({
   },
 });
 
-function FormDrawer({ handleClose, classes, add, update, closeDrawer }) {
+function FormDrawer({ classes, add, update, closeDrawer }) {
+  const formRef = useRef(null);
   const handleSubmit = updateItemId => e => {
     e.preventDefault();
-    console.log(updateItemId);
     const form = e.target;
     const id =
       typeof updateItemId === 'string' && updateItemId
@@ -36,25 +39,29 @@ function FormDrawer({ handleClose, classes, add, update, closeDrawer }) {
     if (typeof updateItemId === 'string')
       update({ id, status, name, desc, date, priority, tag });
     else add({ id, status, name, desc, date, priority, tag });
-    handleClose();
+    closeDrawer('submit')();
   };
 
   return (
     <DrawerContext.Consumer>
-      {({ open, id }) => (
+      {({ open, id, handleChange }) => (
         <TodosContext.Consumer>
           {({ list }) => {
             const updateItem = list.filter(item => item.id === id)[0];
             console.log(id);
             return (
-              <Drawer anchor="right" open={open} onClose={closeDrawer}>
+              <Drawer anchor="right" open={open} onClose={closeDrawer('check')}>
                 <div className={classes.drawer}>
                   <Head item={updateItem} />
-                  <form onSubmit={handleSubmit(id)} className={classes.form}>
+                  <form
+                    ref={formRef}
+                    onSubmit={handleSubmit(id)}
+                    className={classes.form}
+                  >
                     <Divider />
-                    <Body updateItem={updateItem} />
+                    <Body handleChange={handleChange} updateItem={updateItem} />
                     <Divider />
-                    <Footer handleClose={closeDrawer} />
+                    <Footer closeDrawer={closeDrawer} />
                   </form>
                 </div>
               </Drawer>
@@ -67,7 +74,6 @@ function FormDrawer({ handleClose, classes, add, update, closeDrawer }) {
 }
 
 FormDrawer.propTypes = {
-  handleClose: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   add: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired,

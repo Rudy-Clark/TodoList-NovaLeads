@@ -4,6 +4,7 @@ export const drawer = {
   open: false,
   id: null,
   changed: false,
+  handleChange: () => {},
 };
 
 export const todoList = {

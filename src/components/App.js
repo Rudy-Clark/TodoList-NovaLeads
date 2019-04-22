@@ -11,12 +11,7 @@ import amber from '@material-ui/core/colors/amber';
 import withRoot from '../withRoot';
 import Table from './Table';
 import Drawer from './Drawer';
-import {
-  TodosContext,
-  DrawerContext,
-  todoList,
-  drawer as drawerState,
-} from '../context';
+import { TodosContext, DrawerContext, todoList, drawer } from '../context';
 
 const styles = () => ({
   createButton: {
@@ -53,17 +48,33 @@ const styles = () => ({
 
 // eslint-disable-next-line arrow-body-style
 const App = ({ classes }) => {
-  const [form, setToggle] = useState(drawerState);
+  const [form, setDrawer] = useState(drawer);
   const [loading, setLoad] = useState(false);
-  const handleDrawer = (id = null) => {
-    setToggle({ open: !form.open, id });
-  };
-  const openDrawer = () => {
-    setToggle({ ...form, open: true });
+  const [snackState, setSnackState] = useState(false);
+
+  const openDrawer = (id = null) => {
+    setDrawer({ ...form, open: true, id });
   };
 
-  const closeWithoutCheck = () => {
-    setToggle({ ...form, open: false });
+  const handleChange = () => {
+    if (form.changed) return false;
+    return setDrawer({ ...form, changed: true });
+  };
+
+  const closeDrawer = type => () => {
+    switch (type) {
+      case 'check':
+        if (form.changed && snackState) return undefined;
+        if (form.changed) {
+          setSnackState(true);
+        } else setDrawer({ ...form, open: false });
+        break;
+      case 'submit':
+        setDrawer({ ...form, open: false, changed: false });
+        break;
+      default:
+        setDrawer({ open: false, changed: false, id: null });
+    }
   };
 
   const [list, setList] = useState(todoList.list);
@@ -82,17 +93,16 @@ const App = ({ classes }) => {
 
   const del = id => setList(list.filter(item => item.id !== id));
   const edit = id => {
-    handleDrawer(id);
+    openDrawer(id);
   };
   const update = editedItem => {
     setList(list.map(item => (item.id === editedItem.id ? editedItem : item)));
   };
 
-  const [snackState, setSnackbar] = useState(false);
-
   const drawerValue = {
     open: form.open,
     id: form.id,
+    handleChange,
   };
   const todoValue = {
     list,
@@ -114,10 +124,7 @@ const App = ({ classes }) => {
         <Button
           className={classes.createButton}
           variant="contained"
-          onClick={() => {
-            openDrawer();
-            setSnackbar(true);
-          }}
+          onClick={() => openDrawer()}
         >
           Добавить задачу
         </Button>
@@ -128,8 +135,8 @@ const App = ({ classes }) => {
           <Drawer
             add={add}
             update={update}
-            closeDrawer={closeWithoutCheck}
-            handleClose={handleDrawer}
+            setSnackState={setSnackState}
+            closeDrawer={closeDrawer}
           />
         </TodosContext.Provider>
       </DrawerContext.Provider>
@@ -150,24 +157,22 @@ const App = ({ classes }) => {
           horizontal: 'right',
         }}
         open={snackState}
-        onClose={() => {
-          setSnackbar(false);
-          closeWithoutCheck();
-        }}
+        onClose={() => setSnackState(false)}
       >
         <SnackbarContent
           className={classes.warningSnackbar}
           aria-describedby="warning-snackbar"
           message={
             <span id="warning-snackbar" style={{ margin: 0 }}>
-              Все введение данные будут утеряны<br /> вы уверены что хотите выйти?
+              Все введенные данные будут утеряны
+              <br /> вы уверены что хотите выйти?
             </span>
           }
           action={[
             <Button
               onClick={() => {
-                setSnackbar(false);
-                closeWithoutCheck();
+                setSnackState(false);
+                setDrawer({ ...form, changed: false, open: false });
               }}
               size="small"
               color="inherit"
@@ -176,15 +181,13 @@ const App = ({ classes }) => {
               OK
             </Button>,
             <Button
-            onClick={() => {
-              setSnackbar(false);
-            }}
-            size="small"
-            color="inherit"
-            key="no"
-          >
-            Отмена
-          </Button>,
+              onClick={() => setSnackState(false)}
+              size="small"
+              color="inherit"
+              key="no"
+            >
+              Отмена
+            </Button>,
           ]}
         />
       </Snackbar>

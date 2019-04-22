@@ -16,6 +16,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 
 import Autocomplete from './Autocomplete';
+import { formRows } from './index';
 
 const styles = theme => ({
   main: {
@@ -46,10 +47,8 @@ const priorityOptions = [
   { label: 'Срочная важная задача', id: 'd' },
 ];
 
-const propsForm = ['name', 'tag', 'status', 'priority', 'date', 'desc'];
-
-function Body({ classes, updateItem }) {
-  const defaultValues = propsForm.reduce((object, key) => {
+function Body({ classes, updateItem, handleChange }) {
+  const defaultValues = formRows.reduce((object, key) => {
     if (!updateItem) object[key] = '';
     else object[key] = updateItem[key];
     return object;
@@ -61,6 +60,7 @@ function Body({ classes, updateItem }) {
       <FormControl margin="normal" required>
         <InputLabel htmlFor="name">Название задачи</InputLabel>
         <Input
+          onChange={handleChange}
           id="name"
           name="name"
           type="text"
@@ -68,6 +68,7 @@ function Body({ classes, updateItem }) {
         />
       </FormControl>
       <TextField
+        onChange={handleChange}
         name="desc"
         label="Описание задачи"
         margin="normal"
@@ -84,7 +85,10 @@ function Body({ classes, updateItem }) {
             type="date"
             name="date"
             margin="normal"
-            onChange={e => setActive(true)}
+            onChange={e => {
+              setActive(true);
+              handleChange(e);
+            }}
             defaultValue={defaultValues.date}
             className={classes.textField}
             InputLabelProps={{
@@ -94,7 +98,11 @@ function Body({ classes, updateItem }) {
         </Grid>
         <Grid item xs={6}>
           {active && (
-            <RadioGroup name="priority" defaultValue={defaultValues.priority}>
+            <RadioGroup
+              onChange={handleChange}
+              name="priority"
+              defaultValue={defaultValues.priority}
+            >
               {priorityOptions.map(item => (
                 <FormControlLabel
                   key={item.id}
@@ -120,6 +128,7 @@ function Body({ classes, updateItem }) {
             <Select
               onChange={e => {
                 setValue(e.target.value);
+                handleChange(e);
               }}
               value={value}
               inputProps={{ id: 'status', name: 'status' }}
@@ -131,7 +140,10 @@ function Body({ classes, updateItem }) {
           </FormControl>
         </Grid>
         <Grid item xs={6}>
-          <Autocomplete defaultValue={defaultValues.tag} />
+          <Autocomplete
+            handleChange={handleChange}
+            defaultValue={defaultValues.tag}
+          />
         </Grid>
       </Grid>
     </main>
@@ -141,6 +153,7 @@ function Body({ classes, updateItem }) {
 Body.propTypes = {
   classes: PropTypes.object.isRequired,
   updateItem: PropTypes.object || '',
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Body);
