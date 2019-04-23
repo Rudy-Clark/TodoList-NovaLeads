@@ -7,23 +7,25 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import amber from '@material-ui/core/colors/amber';
+import Grid from '@material-ui/core/Grid';
 
 import withRoot from '../withRoot';
 import Table from './Table';
 import Drawer from './Drawer';
 import { TodosContext, DrawerContext, todoList, drawer } from '../context';
 
-const styles = () => ({
-  createButton: {
-    position: 'absolute',
-    top: '12px',
-    left: '12px',
+const styles = theme => ({
+  layout: {
+    width: 'auto',
+    margin: theme.spacing.unit * 3,
+    [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
+      width: 1100,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
   },
   warningSnackbar: {
     backgroundColor: amber[700],
-  },
-  mainTitle: {
-    padding: '12px 0',
   },
   loaderContainer: {
     position: 'absolute',
@@ -78,7 +80,7 @@ const App = ({ classes }) => {
         await fakeDataFetch();
         injectActions[action.type](action.param);
       } catch (error) {
-        console.error(error);
+        console.error('Impossible))');
       }
       setDrawer({ ...form, changed: false, open: false });
       setLoad(false);
@@ -144,29 +146,36 @@ const App = ({ classes }) => {
   };
   return (
     <Fragment>
-      <Typography
-        className={classes.mainTitle}
-        component="h1"
-        variant="h2"
-        align="center"
-        color="textPrimary"
-        gutterBottom
-      >
-        Список Задач
-        <Button
-          className={classes.createButton}
-          variant="contained"
-          onClick={() => openDrawer()}
-        >
-          Добавить задачу
-        </Button>
-      </Typography>
-      <DrawerContext.Provider value={drawerValue}>
-        <TodosContext.Provider value={todoValue}>
-          <Table />
-          <Drawer add={add} update={update} closeDrawer={closeDrawer} />
-        </TodosContext.Provider>
-      </DrawerContext.Provider>
+      <div className={classes.layout}>
+        <Grid container justify="space-between" alignItems="center">
+          <Grid item sm={3} xs={12}>
+            <Typography
+              component="h1"
+              variant="h5"
+              align="center"
+              color="textPrimary"
+            >
+              Список Задач
+            </Typography>
+          </Grid>
+          <Grid item sm={3} xs={12} align="center">
+            <Button
+              className={classes.createButton}
+              variant="contained"
+              onClick={() => openDrawer()}
+            >
+              Добавить задачу
+            </Button>
+          </Grid>
+        </Grid>
+        <DrawerContext.Provider value={drawerValue}>
+          <TodosContext.Provider value={todoValue}>
+            <Table />
+            <Drawer add={add} update={update} closeDrawer={closeDrawer} />
+          </TodosContext.Provider>
+        </DrawerContext.Provider>
+      </div>
+      {/* loading && snackbar */}
       {loading && (
         <div className={classes.loaderContainer}>
           <div className={classes.loaderWrapper}>
