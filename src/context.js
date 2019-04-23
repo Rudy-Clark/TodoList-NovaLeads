@@ -9,6 +9,7 @@ export const drawer = {
 
 export const todoList = {
   list: [],
+  action: { type: '', param: null },
 };
 
 export const TodosContext = createContext(todoList);

@@ -28,7 +28,7 @@ function Footer({ classes, closeDrawer }) {
           variant="contained"
           color="secondary"
           className={classes.button}
-          onClick={closeDrawer('check')}
+          onClick={closeDrawer}
         >
           Отмена
         </Button>

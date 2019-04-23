@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -46,40 +46,64 @@ const styles = () => ({
   },
 });
 
-// eslint-disable-next-line arrow-body-style
 const App = ({ classes }) => {
+  const [action, setAction] = useState(todoList.action);
   const [form, setDrawer] = useState(drawer);
-  const [loading, setLoad] = useState(false);
   const [snackState, setSnackState] = useState(false);
+  const [loading, setLoad] = useState(false);
+  const [list, setList] = useState(todoList.list);
+  const injectActions = {
+    del(id) {
+      setList(list.filter(item => item.id !== id));
+    },
+    add: ({ name, id, desc, tag, date, priority, status }) => {
+      setList([...list, { name, id, desc, tag, date, priority, status }]);
+    },
+    update(editedItem) {
+      setList(
+        list.map(item => (item.id === editedItem.id ? editedItem : item)),
+      );
+    },
+  };
+
+  const fakeDataFetch = () =>
+    new Promise(resolve => {
+      setTimeout(resolve, 2000);
+    });
+  useEffect(() => {
+    if (!injectActions[action.type]) return undefined;
+    const fakeFetch = async () => {
+      setLoad(true);
+      try {
+        await fakeDataFetch();
+        injectActions[action.type](action.param);
+      } catch (error) {
+        console.error(error);
+      }
+      setDrawer({ ...form, changed: false, open: false });
+      setLoad(false);
+    };
+    fakeFetch();
+  }, [action]);
 
   const openDrawer = (id = null) => {
     setDrawer({ ...form, open: true, id });
   };
 
-  const handleChange = () => {
+  const handleChange = e => {
+    if (e.target) {
+      if (!e.target.value) setDrawer({ ...form, changed: false });
+    } else if (!e.value) setDrawer({ ...form, changed: false });
+
     if (form.changed) return false;
     return setDrawer({ ...form, changed: true });
   };
 
-  const closeDrawer = type => () => {
-    switch (type) {
-      case 'check':
-        if (form.changed && snackState) return undefined;
-        if (form.changed) {
-          setSnackState(true);
-        } else setDrawer({ ...form, open: false });
-        break;
-      case 'submit':
-        setDrawer({ ...form, open: false, changed: false });
-        break;
-      default:
-        setDrawer({ open: false, changed: false, id: null });
-    }
-  };
-
-  const [list, setList] = useState(todoList.list);
-  const add = ({ name, id, desc, tag, date, priority, status }) => {
-    setList([...list, { name, id, desc, tag, date, priority, status }]);
+  const closeDrawer = () => {
+    if (form.changed && snackState) return undefined;
+    if (form.changed) {
+      setSnackState(true);
+    } else setDrawer({ ...form, open: false });
   };
 
   const setStatus = (id, value) => {
@@ -91,12 +115,20 @@ const App = ({ classes }) => {
     setList(newList);
   };
 
-  const del = id => setList(list.filter(item => item.id !== id));
   const edit = id => {
     openDrawer(id);
   };
+
+  const add = item => {
+    setAction({ type: 'add', param: item });
+  };
+
+  const del = id => {
+    setAction({ type: 'del', param: id });
+  };
+
   const update = editedItem => {
-    setList(list.map(item => (item.id === editedItem.id ? editedItem : item)));
+    setAction({ type: 'update', param: editedItem });
   };
 
   const drawerValue = {
@@ -132,12 +164,7 @@ const App = ({ classes }) => {
       <DrawerContext.Provider value={drawerValue}>
         <TodosContext.Provider value={todoValue}>
           <Table />
-          <Drawer
-            add={add}
-            update={update}
-            setSnackState={setSnackState}
-            closeDrawer={closeDrawer}
-          />
+          <Drawer add={add} update={update} closeDrawer={closeDrawer} />
         </TodosContext.Provider>
       </DrawerContext.Provider>
       {loading && (

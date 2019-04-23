@@ -39,7 +39,6 @@ function FormDrawer({ classes, add, update, closeDrawer }) {
     if (typeof updateItemId === 'string')
       update({ id, status, name, desc, date, priority, tag });
     else add({ id, status, name, desc, date, priority, tag });
-    closeDrawer('submit')();
   };
 
   return (
@@ -48,9 +47,8 @@ function FormDrawer({ classes, add, update, closeDrawer }) {
         <TodosContext.Consumer>
           {({ list }) => {
             const updateItem = list.filter(item => item.id === id)[0];
-            console.log(id);
             return (
-              <Drawer anchor="right" open={open} onClose={closeDrawer('check')}>
+              <Drawer anchor="right" open={open} onClose={closeDrawer}>
                 <div className={classes.drawer}>
                   <Head item={updateItem} />
                   <form

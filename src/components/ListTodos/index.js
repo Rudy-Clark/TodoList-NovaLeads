@@ -11,9 +11,8 @@ function ListTodos() {
   return (
     <Fragment>
       <TodosContext.Consumer>
-        {({ list, setStatus, del, edit }) => {
-          console.log(list);
-          return list.map(item => (
+        {({ list, setStatus, del, edit }) =>
+          list.map(item => (
             <TableRow key={item.id}>
               <TableCell component="td" scope="row">
                 {item.id}
@@ -36,8 +35,8 @@ function ListTodos() {
                 <Actions del={() => del(item.id)} edit={() => edit(item.id)} />
               </TableCell>
             </TableRow>
-          ));
-        }}
+          ))
+        }
       </TodosContext.Consumer>
     </Fragment>
   );
