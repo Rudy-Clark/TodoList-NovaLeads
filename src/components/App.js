@@ -151,7 +151,7 @@ const App = ({ classes }) => {
           <Grid item sm={3} xs={12}>
             <Typography
               component="h1"
-              variant="h5"
+              variant="h4"
               align="center"
               color="textPrimary"
             >

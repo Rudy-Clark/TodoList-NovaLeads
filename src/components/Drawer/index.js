@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
@@ -12,17 +12,25 @@ import Footer from './Footer';
 export const formRows = ['name', 'tag', 'status', 'priority', 'date', 'desc'];
 
 const styles = theme => ({
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: '240',
+  drawerPaper: {
+    overflow: 'unset',
+    [theme.breakpoints.up('xs')]: {
+      width: 360,
       flexShrink: 0,
-      padding: '0 12px',
     },
+    [theme.breakpoints.up('sm')]: {
+      width: 500,
+      flexShrink: 0,
+    },
+  },
+  form: {
+    position: 'relative',
+    height: '100%',
+    width: '100%',
   },
 });
 
 function FormDrawer({ classes, add, update, closeDrawer }) {
-  const formRef = useRef(null);
   const handleSubmit = updateItemId => e => {
     e.preventDefault();
     const form = e.target;
@@ -48,20 +56,21 @@ function FormDrawer({ classes, add, update, closeDrawer }) {
           {({ list }) => {
             const updateItem = list.filter(item => item.id === id)[0];
             return (
-              <Drawer anchor="right" open={open} onClose={closeDrawer}>
-                <div className={classes.drawer}>
+              <Drawer
+                anchor="right"
+                className={classes.drawer}
+                open={open}
+                onClose={closeDrawer}
+                classes={{
+                  paper: classes.drawerPaper,
+                }}
+              >
+                <form onSubmit={handleSubmit(id)} className={classes.form}>
                   <Head item={updateItem} />
-                  <form
-                    ref={formRef}
-                    onSubmit={handleSubmit(id)}
-                    className={classes.form}
-                  >
-                    <Divider />
-                    <Body handleChange={handleChange} updateItem={updateItem} />
-                    <Divider />
-                    <Footer closeDrawer={closeDrawer} />
-                  </form>
-                </div>
+                  <Divider />
+                  <Body handleChange={handleChange} updateItem={updateItem} />
+                  <Footer closeDrawer={closeDrawer} />
+                </form>
               </Drawer>
             );
           }}

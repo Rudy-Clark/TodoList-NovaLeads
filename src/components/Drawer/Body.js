@@ -20,23 +20,16 @@ import { formRows } from './index';
 
 const styles = theme => ({
   main: {
-    width: 'auto',
-    padding: '8px',
-    display: 'block', // Fix IE 11 issue.
     overflowY: 'auto',
-    margin: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
+    height: '80%',
+    overflowX: 'hidden',
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px 70px`,
   },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit,
+  selectFormControl: {
+    minWidth: 200,
   },
-  formControl: {
-    minWidth: 120,
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2,
   },
 });
 
@@ -57,29 +50,30 @@ function Body({ classes, updateItem, handleChange }) {
   const [value, setValue] = useState(defaultValues.status);
   return (
     <main className={classes.main}>
-      <FormControl margin="normal" required>
-        <InputLabel htmlFor="name">Название задачи</InputLabel>
-        <Input
-          onChange={handleChange}
-          id="name"
-          name="name"
-          type="text"
-          defaultValue={defaultValues.name}
-        />
-      </FormControl>
-      <TextField
-        onChange={handleChange}
-        name="desc"
-        label="Описание задачи"
-        margin="normal"
-        multiline
-        fullWidth
-        rowsMax="3"
-        className={classes.textField}
-        defaultValue={defaultValues.desc}
-      />
-      <Grid container spacing={8} alignItems="center">
-        <Grid item xs={6}>
+      <Grid container spacing={24}>
+        <Grid item xs={12}>
+          <TextField
+            required
+            onChange={handleChange}
+            name="name"
+            label="Название задачи"
+            className={classes.textField}
+            defaultValue={defaultValues.name}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            onChange={handleChange}
+            name="desc"
+            label="Описание задачи"
+            multiline
+            fullWidth
+            rowsMax="3"
+            className={classes.textField}
+            defaultValue={defaultValues.desc}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <TextField
             label="Дата выполнения"
             type="date"
@@ -96,7 +90,7 @@ function Body({ classes, updateItem, handleChange }) {
             }}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           {active && (
             <RadioGroup
               onChange={handleChange}
@@ -115,17 +109,11 @@ function Body({ classes, updateItem, handleChange }) {
             </RadioGroup>
           )}
         </Grid>
-      </Grid>
-      <Grid
-        container
-        justify="center"
-        alignContent="center"
-        alignItems="center"
-      >
-        <Grid item xs={6}>
-          <FormControl className={classes.formControl}>
+        <Grid item xs={12} sm={6}>
+          <FormControl className={classes.selectFormControl}>
             <InputLabel htmlFor="status">Статус</InputLabel>
             <Select
+              className={classes.selectEmpty}
               onChange={e => {
                 setValue(e.target.value);
                 handleChange(e);
@@ -139,7 +127,7 @@ function Body({ classes, updateItem, handleChange }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} alignContent="flex-end" sm={6}>
           <Autocomplete
             handleChange={handleChange}
             defaultValue={defaultValues.tag}
