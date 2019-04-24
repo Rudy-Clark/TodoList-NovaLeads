@@ -9,8 +9,6 @@ import Head from './Head';
 import Body from './Body';
 import Footer from './Footer';
 
-export const formRows = ['name', 'tag', 'status', 'priority', 'date', 'desc'];
-
 const styles = theme => ({
   drawerPaper: {
     overflow: 'unset',

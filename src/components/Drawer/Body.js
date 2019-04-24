@@ -1,6 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-return-assign */
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -10,13 +8,17 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Select from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import DescriptionIcon from '@material-ui/icons/Description';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 
 import Autocomplete from './Autocomplete';
-import { formRows } from './index';
 
 const styles = theme => ({
   main: {
@@ -32,6 +34,8 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 2,
   },
 });
+
+const formRows = ['name', 'tag', 'status', 'priority', 'date', 'desc'];
 
 const priorityOptions = [
   { label: 'Не срочная неважная задача', id: 'a' },
@@ -59,6 +63,13 @@ function Body({ classes, updateItem, handleChange }) {
             label="Название задачи"
             className={classes.textField}
             defaultValue={defaultValues.name}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <ListAltIcon />
+                </InputAdornment>
+              ),
+            }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -71,6 +82,13 @@ function Body({ classes, updateItem, handleChange }) {
             rowsMax="3"
             className={classes.textField}
             defaultValue={defaultValues.desc}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <DescriptionIcon />
+                </InputAdornment>
+              ),
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -87,6 +105,13 @@ function Body({ classes, updateItem, handleChange }) {
             className={classes.textField}
             InputLabelProps={{
               shrink: true,
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CalendarTodayIcon />
+                </InputAdornment>
+              ),
             }}
           />
         </Grid>
@@ -118,8 +143,18 @@ function Body({ classes, updateItem, handleChange }) {
                 setValue(e.target.value);
                 handleChange(e);
               }}
+              input={
+                <Input
+                  name="status"
+                  id="status"
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <DoneOutlineIcon />
+                    </InputAdornment>
+                  }
+                />
+              }
               value={value}
-              inputProps={{ id: 'status', name: 'status' }}
             >
               <MenuItem value="3">Выполнена</MenuItem>
               <MenuItem value="2">Выполняется</MenuItem>
@@ -127,7 +162,7 @@ function Body({ classes, updateItem, handleChange }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} alignContent="flex-end" sm={6}>
+        <Grid item xs={12} sm={6}>
           <Autocomplete
             handleChange={handleChange}
             defaultValue={defaultValues.tag}

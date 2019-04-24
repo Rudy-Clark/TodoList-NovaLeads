@@ -9,7 +9,8 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
-
+import InputAdornment from '@material-ui/core/InputAdornment';
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 const suggestions = [];
 
 // eslint-disable-next-line no-plusplus
@@ -25,7 +26,7 @@ const styles = theme => ({
   },
   input: {
     display: 'flex',
-    padding: 0,
+    padding: `0 ${theme.spacing.unit}px`,
   },
   valueContainer: {
     display: 'flex',
@@ -50,10 +51,11 @@ const styles = theme => ({
   },
   singleValue: {
     fontSize: 16,
+    padding: `0 ${theme.spacing.unit - 10}px`,
   },
   placeholder: {
     position: 'absolute',
-    left: 2,
+    left: 35,
     fontSize: 16,
   },
   paper: {
@@ -90,6 +92,11 @@ function Control(props) {
       fullWidth
       InputProps={{
         inputComponent,
+        startAdornment: (
+          <InputAdornment>
+            <LocalOfferIcon />
+          </InputAdornment>
+        ),
         inputProps: {
           className: props.selectProps.classes.input,
           inputRef: props.innerRef,
@@ -191,7 +198,7 @@ function IntegrationReactSelect({ classes, defaultValue, handleChange }) {
             handleChangeSingle(e);
             handleChange(e);
           }}
-          placeholder="Тег"
+          placeholder="тег"
         />
       </NoSsr>
     </div>
