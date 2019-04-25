@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-DEMO: [TodoList](https://github.com/Rudy-Clark/TodoList-NovaLeads)
+DEMO: [TodoList](https://todolist-react-64198.firebaseapp.com/)
 
 ```bash
 git clone https://github.com/Rudy-Clark/TodoList-NovaLeads
